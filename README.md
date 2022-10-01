@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+### 安装相关依赖
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+npm i redux
 
-## Available Scripts
+npm i react-redux
 
-In the project directory, you can run:
+### 构建store和 reducer
 
-### `npm start`
+1.创建reducer/index.js 文件，构建reducer来响应actions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2.创建store/index.js 文件，通过~~createstore~~**legacy_createStore**方法，把我们的reducer传入进来
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3.在app.js 中引入store
 
-### `npm test`
+### 搭建页面结构
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1.创建一个组件，名字叫ComA，里面放一个 button按钮
 
-### `npm run build`
+2.创建另外一个组件，名字叫ComB，里面放一个div，用来显示数字
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3.在app.js 中引入两个组件
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### provider 组件实现
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.导入 Provider组件，在react-redux中进行导入
 
-### `npm run eject`
+2.需要利用Provider组件对我们整个结构进行包裹
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3.给我们Provider组件设置store的属性，而这个值就是我们通过legacy_createStore构建出来的 store 实例对象
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### comA发送action
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1.导入connect
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2.利用connect对组件进行加强
+connect(要接受数组的函数，要发送action的函数)(放入要加强的组件)
 
-## Learn More
+3.我们需要实现connect第二个参数
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4.构建了一个函数mapDispatchToProps(dispatch)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+dispatch:就是用来发送给action的
 
-### Code Splitting
+5.在这个函数里面就可以返回一个对象
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+key是方法名
 
-### Analyzing the Bundle Size
+value:调用dispatch去发送action
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+6.在组件的内容就可以通过props来拿到这个方法了
 
-### Making a Progressive Web App
+### ComB接受state
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1.导入connect方法
 
-### Advanced Configuration
+2.利用connect对组件进行加强
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3.ComB属于是接收方，就需要实现 connect的第一个参数
 
-### Deployment
+4.mapstateToProps里面的一个参数就是我们很关心state
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+5.把这个state 进行 return才能在组件的内部获取到最新的数据
 
-### `npm run build` fails to minify
+6.ComB 是否能拿到数据,关键点是reducer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+7.只有reducer里面返回了新的state的时候，我们才能够获取到
